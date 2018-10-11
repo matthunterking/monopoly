@@ -1,8 +1,4 @@
-$(() => {
-
-  let isPlayer1Turn = true;
-  let doubles = false;
-
+// set up Squares
   class Square {
     constructor(name, price, rent, color, canBeBrought) {
       this.name = name;
@@ -18,27 +14,33 @@ $(() => {
 
   const brown = '#BA9149';
   const lightBlue = '#C0F7FC';
+  const pink = '#f00093';
+  const orange = '#ff9200';
+  const red = '#f90000';
+  const yellow = '#f9fb00';
+  const green = '#00bb52';
+  const darkBlue = '#006ac3';
 
   const go = new Square('Go', null, null, 'white', false);
   const oldKentRoad = new Square('Old Kent Road', 60, 2, brown, true);
   const communityChest1 = new Square('Community Chest', null, null, 'white', false);
   const whitechapelRoad = new Square('Whitechapel Road', 60, 4, brown, true);
-  // const incomeTax = new Square('Income Tax', null, null, 'white', false);
-  // const kingsCross = new Square('Kings Cross Station', 200, 25, 'white', true);
-  // const angelIslington = new Square('The Angel Islington', 100, 6, lightBlue, true);
-  // const chance1 = new Square('Chance', null, null, 'white', false);
-  // const eustonRoad = new Square('Euston Road', 100, 6, lightBlue, true);
-  // const pentonvilleRoad = new Square('Pentonville Road', 120, 8, lightBlue, true);
-  // 10: new Square(10, null, null),
-  // 11: new Square(11, 140, 10),
-  // 12: new Square(12, 150, 20),
-  // 13: new Square(13, 140, 10),
-  // 14: new Square(14, 160, 12),
-  // 15: new Square(15, 200, 25),
-  // 16: new Square(16, 180, 14),
-  // 17: new Square(17, null, null),
-  // 18: new Square(18, 180, 14),
-  // 19: new Square(19, 200, 16),
+  const incomeTax = new Square('Income Tax', null, null, 'white', false);
+  const kingsCross = new Square('Kings Cross Station', 200, 25, 'white', true);
+  const angelIslington = new Square('The Angel Islington', 100, 6, lightBlue, true);
+  const chance1 = new Square('Chance', null, null, 'white', false);
+  const eustonRoad = new Square('Euston Road', 100, 6, lightBlue, true);
+  const pentonvilleRoad = new Square('Pentonville Road', 120, 8, lightBlue, true);
+  const jail = new Square('Jail', null, null, 'white', false);
+  const pallMall = new Square('Pall Mall', 140, 10, pink, true);
+  const electric = new Square('Electric Company', 150, 20, 'white', true);
+  const whitehall = new Square('Whitehall', 140, 10, pink, true);
+  const northumberLand = new Square('NorthumberLand Road', 160, 12, pink, true);
+  const fenchurch = new Square('Fenchurch Street Station', 200, 25, 'white', true);
+  const bow = new Square('Bow Street', 180, 14, orange, true);
+  const communityChest2 = new Square('Community Chest', null, null, false);
+  const marlborough = new Square('Marlborough Street', 180, 14, orange, true);
+  const vine = new Square('Vine Street', 200, 16, orange, true);
   // 20: new Square(20, null, null),
   // 21: new Square(21, 220, 18),
   // 22: new Square(22, null, null),
@@ -62,21 +64,44 @@ $(() => {
 
   // const Mayfair = new Square('Mayfair', 400, 50, 'darkBlue', true);
 
-
   const board = [
     go,
     oldKentRoad,
     communityChest1,
-    whitechapelRoad
-    // incomeTax,
-    // kingsCross,
-    // angelIslington,
-    // chance1,
-    // eustonRoad,
-    // pentonvilleRoad,
-    // Mayfair
+    whitechapelRoad,
+    incomeTax,
+    kingsCross,
+    angelIslington,
+    chance1,
+    eustonRoad,
+    pentonvilleRoad,
+    jail,
+    pallMall,
+    electric,
+    whitehall,
+    northumberLand,
+    fenchurch,
+    bow,
+    communityChest2,
+    marlborough,
+    vine
   ];
 
+
+
+
+
+
+
+
+
+
+
+
+$(() => {
+  let isPlayer1Turn = true;
+  let currentPlayer;
+  let doubles = false;
 
   let previousSquare = board[board.length -1];
   let currentSquare = board[0];
@@ -85,10 +110,12 @@ $(() => {
   const $playerName = $('#playerName');
   const $description = $('#description');
 
+
+
   const $previousSquareColor = $('#previousSquareColor');
   const $previousSquareName = $('.previousSquareName');
   const $previousSquareValue = $('#previousSquareValue');
-  const $previousSquareOwner = $('#currentSquareOwner');
+  const $previousSquareOwner = $('#previousSquareOwner');
   const $previousSquare = $('#previousSquare');
   const $player1PiecePreviousSquare = $('#player1PiecePreviousSquare');
   const $player2PiecePreviousSquare = $('#player2PiecePreviousSquare');
@@ -104,64 +131,143 @@ $(() => {
   const $nextSquareColor = $('#nextSquareColor');
   const $nextSquareName = $('.nextSquareName');
   const $nextSquareValue = $('#nextSquareValue');
-  const $nextSquareOwner = $('#currentSquareOwner');
+  const $nextSquareOwner = $('#nextSquareOwner');
   const $nextSquare = $('#nextSquare');
   const $player1PieceNextSquare = $('#player1PieceNextSquare');
   const $player2PieceNextSquare = $('#player2PieceNextSquare');
 
   const $playerMoney = $('#playerMoney');
 
+  const $rollButton = $('#rollButton');
   const $buyButton = $('#buyButton');
+  const $endTurnButton = $('#endTurnButton');
+
+  class Player {
+    constructor(name, piece, color) {
+      this.name = name;
+      this.piece = piece;
+      this.money = 1000;
+      this.location = 0;
+      this.currentSquare = board[0];
+      this.color = color;
+    }
+    roll() {
+      const distance = rollDice();
+      this.movePlayer(distance);
+      updateSquaresDisplay();
+      if(currentSquare.owner) {
+        if(currentSquare.owner.name !== this.name) {
+          payRent();
+        }
+      } else {
+        makeBuyAvaible();
+      }
+      endTurn();
+    }
+    movePlayer(distance) {
+      if(this.name === 'Player 1') {
+        currentSquare.player1 = false;
+      } else {
+        currentSquare.player2 = false;
+      }
+      this.location += distance;
+      if(this.location >= board.length) {
+        this.location = board.length - (this.location - board.length);
+        this.money += 200;
+      }
+      this.currentSquare = board[this.location];
+
+      if(this.location === 0){
+        previousSquare = board[board.length - 1];
+      } else {
+        previousSquare = board[this.location - 1];
+      }
+      if(this.location === board.length -1) {
+        nextSquare = board[0];
+      } else {
+        nextSquare = board[this.location + 1];
+      }
+
+      currentSquare = board[this.location];
+
+      if(this.name === 'Player 1') {
+        currentSquare.player1 = true;
+      } else {
+        currentSquare.player2 = true;
+      }
+    }
+  }
+
+
+
+  const player1 = new Player('Player 1', 'dog', 'pink');
+  const player2 = new Player('Player 2', 'car', 'lime');
+
+
 
   function rollDice() {
-    const die1 = Math.floor(Math.random() * 2) + 1;
-    const die2 = Math.floor(Math.random() * 2) + 1;
+    const die1 = Math.floor(Math.random() * 6) + 1;
+    const die2 = Math.floor(Math.random() * 6) + 1;
     $('#die1').html(die1);
     $('#die2').html(die2);
-    if(die1 !== die2) {
+    if(die1 === die2) {
       doubles = true;
     }
     return die1 + die2;
   }
 
   function payRent() {
-    let currentPlayer;
     let otherPlayer;
     if(isPlayer1Turn) {
-      currentPlayer = player1;
       otherPlayer = player2;
     } else {
-      currentPlayer = player2;
       otherPlayer = player1;
     }
-    const currentSquare = board[currentPlayer.location];
-    currentSquare.css('backgroundColor', currentPlayer.color);
+    $currentSquare.css('backgroundColor', currentPlayer.color);
     currentPlayer.money -= currentSquare.rent;
     otherPlayer.money += currentSquare.rent;
     $description.html(` pays ${otherPlayer.name} £${currentSquare.rent} for landing on `);
   }
 
-  function makeBuyAvaible() {
-    let currentPlayer;
-    isPlayer1Turn ? currentPlayer = player1 : currentPlayer = player2;
-    const currentSquare = board[currentPlayer.location];
-    console.log('buy!!!');
-    if(currentSquare.price) {
-      $buyButton.css('backgroundColor', 'green');
-      $buyButton.on('click', () => {
-        currentSquare.owner = currentPlayer;
-        $currentSquare.css('backgroundColor', currentPlayer.color);
-        $currentSquareOwner.html(`Owned by ${currentPlayer.name}`);
-        currentPlayer.money -= currentSquare.price;
-        $playerMoney.html(currentPlayer.money);
+  function buy() {
+    currentSquare.owner = currentPlayer;
+    $currentSquare.css('backgroundColor', currentPlayer.color);
+    $currentSquareOwner.html(`Owned by ${currentPlayer.name}`);
+    currentPlayer.money -= currentSquare.price;
+    $playerMoney.html(currentPlayer.money);
+    $buyButton.css('backgroundColor', 'white');
+    $buyButton.off('click');
+  }
+
+  function endTurn() {
+    $endTurnButton.on('click', () => {
+      if(!doubles) {
+        isPlayer1Turn = !isPlayer1Turn;
+      }
+      isPlayer1Turn ? currentPlayer = player1 : currentPlayer = player2;
+      setUp();
+      $endTurnButton.off('click');
+      $rollButton.on('click', () => {
+        isPlayer1Turn ? player1.roll() : player2.roll();
+        $rollButton.off('click');
       });
+    });
+  }
+
+  function makeBuyAvaible() {
+    console.log('buy!!!');
+    if(currentSquare.canBeBrought) {
+      $buyButton.css('backgroundColor', 'green');
+      $buyButton.on('click', buy);
     }
   }
 
-  function updateDom() {
-    let currentPlayer;
-    isPlayer1Turn ? currentPlayer = player1 : currentPlayer = player2;
+  function updatePlayerLocation() {
+    $playerName.html(currentPlayer.name);
+    $description.html(' is on ');
+  }
 
+  function updateSquaresDisplay() {
     let currentSquareText = '-';
     let previousSquareText = '-';
     let nextSquareText = '-';
@@ -182,12 +288,9 @@ $(() => {
       nextSquareText = `Owned by ${nextSquare.owner.name}`;
     }
 
-    $playerName.html(currentPlayer.name);
-    $description.html(' is on ');
-
     $previousSquareColor.css('backgroundColor', previousSquare.color);
     $previousSquareName.html(previousSquare.name);
-    $previousSquareValue.html(previousSquare.price);
+    $previousSquareValue.html(previousSquare.price || '-');
     $previousSquareOwner.html(previousSquareText);
     if(previousSquare.owner) {
       $previousSquare.css('backgroundColor', previousSquare.owner.color);
@@ -196,14 +299,18 @@ $(() => {
     }
     if(previousSquare.player1) {
       $player1PiecePreviousSquare.css('backgroundImage', `url(./images/${player1.piece}.jpeg)`);
+    } else {
+      $player1PiecePreviousSquare.css('backgroundImage', '');
     }
     if(previousSquare.player2) {
       $player2PiecePreviousSquare.css('backgroundImage', `url(./images/${player2.piece}.jpeg)`);
+    } else {
+      $player2PiecePreviousSquare.css('backgroundImage', '');
     }
 
     $currentSquareColor.css('backgroundColor', currentSquare.color);
     $currentSquareName.html(currentSquare.name);
-    $currentSquareValue.html(currentSquare.price);
+    $currentSquareValue.html(currentSquare.price || '-');
     $currentSquareOwner.html(currentSquareText);
     if(currentSquare.owner) {
       $currentSquare.css('backgroundColor', currentSquare.owner.color);
@@ -212,14 +319,18 @@ $(() => {
     }
     if(currentSquare.player1) {
       $player1PieceCurrentSquare.css('backgroundImage', `url(./images/${player1.piece}.jpeg)`);
+    } else {
+      $player1PieceCurrentSquare.css('backgroundImage', '');
     }
     if(currentSquare.player2) {
       $player2PieceCurrentSquare.css('backgroundImage', `url(./images/${player2.piece}.jpeg)`);
+    } else {
+      $player2PieceCurrentSquare.css('backgroundImage', '');
     }
 
     $nextSquareColor.css('backgroundColor', nextSquare.color);
     $nextSquareName.html(nextSquare.name);
-    $nextSquareValue.html(nextSquare.price);
+    $nextSquareValue.html(nextSquare.price || '-');
     $nextSquareOwner.html(nextSquareText);
     if(nextSquare.owner) {
       $nextSquare.css('backgroundColor', nextSquare.owner.color);
@@ -228,158 +339,29 @@ $(() => {
     }
     if(nextSquare.player1) {
       $player1PieceNextSquare.css('backgroundImage', `url(./images/${player1.piece}.jpeg)`);
+    } else {
+      $player1PieceNextSquare.css('backgroundImage', '');
     }
-    if(currentSquare.player2) {
+    if(nextSquare.player2) {
       $player2PieceNextSquare.css('backgroundImage', `url(./images/${player2.piece}.jpeg)`);
+    } else {
+      $player2PieceNextSquare.css('backgroundImage', '');
     }
   }
 
-  class Player {
-    constructor(name, piece, color) {
-      this.name = name;
-      this.piece = piece;
-      this.money = 1000;
-      this.location = 0;
-      this.currentSquare = board[0];
-      this.color = color;
-    }
-    roll() {
-      const distance = rollDice();
-      this.movePlayer(distance);
-      updateDom();
-      if(this.currentSquare.owner) {
-        if(this.currentSquare.owner !== this.name) {
-          payRent();
-        }
-      } else {
-        makeBuyAvaible();
-      }
-      isPlayer1Turn = !isPlayer1Turn;
-      // console.log('roll by', this.name, this.currentSquare);
-    }
-    movePlayer(distance) {
-      if(this.name === 'Player 1') {
-        currentSquare.player1 = true;
-      } else {
-        currentSquare.player2 = true;
-      }
-      this.location += distance;
-      console.log('old location =>', this.location);
-      if(this.location >= board.length) {
-        this.location = board.length - (this.location - board.length);
-        this.money += 200;
-      }
-      console.log('new location =>', this.location);
-      this.currentSquare = board[this.location];
-
-
-      if(this.location === 0){
-        previousSquare = board[board.length - 1];
-      } else {
-        previousSquare = this.location - 1;
-      }
-      if(this.location === board.length) {
-        nextSquare = board[0];
-      } else {
-        nextSquare = board[this.location + 1];
-      }
-
-      currentSquare = board[this.location];
-
-      if(this.name === 'Player 1') {
-        currentSquare.player1 = true;
-      } else {
-        currentSquare.player2 = true;
-      }
-    }
+  function setUp() {
+    $playerName.html(currentPlayer.name);
+    $description.html(' is on ');
+    $rollButton.on('click', () => {
+      isPlayer1Turn ? player1.roll() : player2.roll();
+      $rollButton.off('click');
+    });
+    currentSquare.player1 = true;
+    currentSquare.player2 = true;
+    updateSquaresDisplay();
   }
 
-  const player1 = new Player('Player 1', 'dog', 'pink');
-  const player2 = new Player('Player 2', 'car', 'lime');
-
-  $('#rollButton').on('click', () => {
-    isPlayer1Turn ? player1.roll() : player2.roll();
-  });
-
-
-
-
-
-  // class Player {
-  //   constructor(id, name, piece, color) {
-  //     this.id = id;
-  //     this.name = name;
-  //     this.money = 1000;
-  //     this.position = 0;
-  //     this.$playerMoney = $(`#player${id}Money`);
-  //     this.piece = piece;
-  //     this.color = color;
-  //   }
-  //   roll() {
-  //     const startPosition = this.position;
-  //     const die1 = Math.floor(Math.random() * 6) + 1;
-  //     const die2 = Math.floor(Math.random() * 6) + 1;
-  //     $('.die1').html(die1);
-  //     $('.die2').html(die2);
-  //     let newPosition = this.position + die1 + die2;
-  //     if(newPosition > 39) {
-  //       newPosition -= 39;
-  //       this.money += 200;
-  //     }
-  //
-  //     this.position = newPosition;
-  //     if(currentPlayer.id === 1) {
-  //       board[startPosition].$player1Display.html('');
-  //       board[newPosition].$player1Display.html(this.piece);
-  //     } else {
-  //       board[startPosition].$player2Display.html('');
-  //       board[newPosition].$player2Display.html(this.piece);
-  //     }
-  //
-  //     if(!board[newPosition].owner) {
-  //       $('.buy').on('click', () => {
-  //         if(board[newPosition].price) {
-  //           board[newPosition].owner = currentPlayer;
-  //           currentPlayer.money -= board[newPosition].price;
-  //           currentPlayer.$playerMoney.html(currentPlayer.money);
-  //           board[newPosition].$square.css('backgroundColor', currentPlayer.color);
-  //           const squareName = board[newPosition].$square.html();
-  //           $('.display').html(`${currentPlayer.name} brought ${squareName}`);
-  //         } else {
-  //           const squareName = board[newPosition].$square.html();
-  //           $('.display').html(`You cannot buy ${squareName}`);
-  //         }
-  //         $('.buy').off('click');
-  //       });
-  //
-  //     } else {
-  //       if(board[newPosition].owner.id !== currentPlayer.id) {
-  //         currentPlayer.money -= board[newPosition].rent;
-  //         if(currentPlayer.id === 1) {
-  //           player2.money += board[newPosition].rent;
-  //           player2.$playerMoney.html(player2.money);
-  //           $('.display').html(`${currentPlayer.name} paid ${board[newPosition].rent} to ${player2.name}`);
-  //         } else {
-  //           player1.money += board[newPosition].rent;
-  //           player1.$playerMoney.html(player1.money);
-  //           $('.display').html(`${currentPlayer.name} paid ${board[newPosition].rent} to ${player1.name}`);
-  //         }
-  //       }
-  //     }
-  //
-  //
-  //
-  //     currentPlayer.id === 1 ? currentPlayer = player2 : currentPlayer = player1;
-  //   }
-  // }
-  //
-  // const player1 = new Player(1, 'Ellie', '🎅🏻', 'peachpuff');
-  // const player2 = new Player(2, 'Matt', '🚗', 'steelblue');
-  //
-  // let currentPlayer = player1;
-  //
-  //
-
-
+  currentPlayer = player1;
+  setUp();
 
 });
