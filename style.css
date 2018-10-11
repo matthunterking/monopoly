@@ -31,3 +31,10 @@
   display: flex;
   flex-direction: row;
 }
+
+.mrMonopoly {
+  background-image: url('./images/mrMonopoly.jpg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
