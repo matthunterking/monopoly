@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Monopoly</title>
-    <script src="app.js" charset="utf-8"></script>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
+<head>
+  <meta charset="utf-8">
+  <title>Monopoly</title>
+  <script src="app.js" charset="utf-8"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="gameContainer">
     <div class='board'>
       <div class="square" id='0'>
         <p>GO</p>
@@ -20,67 +21,251 @@
         <div class='player1'></div>
         <div class='player2'></div>
       </div>
-      <div class="square" id='1'>
-        <p>Old Kent Road</p>
+      <div class="square" id='2'>
+        <p>Community Chest</p>
+        <p>?</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="square" id='3'>
+        <p>Whitechapel Road</p>
         <p>£60</p>
         <div class='player1'></div>
         <div class='player2'></div>
       </div>
-      <div class="square" id='1'>
-        <p>Old Kent Road</p>
-        <p>£60</p>
+      <div class="square" id='4'>
+        <p>Income Tax</p>
+        <p>£200</p>
         <div class='player1'></div>
         <div class='player2'></div>
       </div>
-      <div class="square" id='1'>
-        <p>Old Kent Road</p>
-        <p>£60</p>
+      <div class="square" id='5'>
+        <p>Kings Cross Station</p>
+        <p>£200</p>
         <div class='player1'></div>
         <div class='player2'></div>
       </div>
-      <div class="square" id='1'>
-        <p>Old Kent Road</p>
-        <p>£60</p>
+      <div class="square" id='6'>
+        <p>The Angel Islington</p>
+        <p>£100</p>
         <div class='player1'></div>
         <div class='player2'></div>
       </div>
-      <div class="square" id='1'>
-        <p>Old Kent Road</p>
-        <p>£60</p>
+      <div class="square" id='7'>
+        <p>Chance</p>
+        <p>?</p>
         <div class='player1'></div>
         <div class='player2'></div>
       </div>
-      <div class="square" id='1'>
-        <p>Old Kent Road</p>
-        <p>£60</p>
+      <div class="square" id='8'>
+        <p>Euston Road</p>
+        <p>£100</p>
         <div class='player1'></div>
         <div class='player2'></div>
       </div>
-      <div class="square" id='1'>
-        <p>Old Kent Road</p>
-        <p>£60</p>
+      <div class="square" id='9'>
+        <p>Pentonville Road</p>
+        <p>£120</p>
         <div class='player1'></div>
         <div class='player2'></div>
       </div>
-      <div class="square" id='1'>
-        <p>Old Kent Road</p>
-        <p>£60</p>
+      <div class="square" id='10'>
+        <p>Jail</p>
+        <p>Just Visiting</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="square" id='38'>
+        <p>Mayfair</p>
+        <p>£400</p>
         <div class='player1'></div>
         <div class='player2'></div>
       </div>
       <div class="gap"></div>
-      <div class="square" id='1'>
-        <p>Last</p>
-        <p>£60</p>
+      <div class="square" id='11'>
+        <p>Pall Mall</p>
+        <p>£140</p>
         <div class='player1'></div>
         <div class='player2'></div>
       </div>
-      <div class="square" id='1'>
-        <p>Old Kent Road</p>
-        <p>£60</p>
+      <div class="square" id='37'>
+        <p>Super Tax</p>
+        <p>£100</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="gap"></div>
+      <div class="square" id='12'>
+        <p>Electic Company</p>
+        <p>£150</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="square" id='36'>
+        <p>Park Lane</p>
+        <p>£350</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="gap"></div>
+      <div class="square" id='13'>
+        <p>Whitehall</p>
+        <p>£140</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="square" id='35'>
+        <p>Chance</p>
+        <p>?</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="gap"></div>
+      <div class="square" id='14'>
+        <p>Northumberland Avenue</p>
+        <p>£160</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="square" id='34'>
+        <p>Liverpool Street Station</p>
+        <p>£200</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="gap"></div>
+      <div class="square" id='15'>
+        <p>Marylbone Station</p>
+        <p>£200</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="square" id='33'>
+        <p>Bond Street</p>
+        <p>£320</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="gap"></div>
+      <div class="square" id='16'>
+        <p>Bow Street</p>
+        <p>£180</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="square" id='32'>
+        <p>Community Chest</p>
+        <p>?</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="gap"></div>
+      <div class="square" id='17'>
+        <p>Community Chest</p>
+        <p>?</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="square" id='31'>
+        <p>Oxford Street</p>
+        <p>£300</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="gap"></div>
+      <div class="square" id='18'>
+        <p>Marylbone Street</p>
+        <p>?</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="square" id='30'>
+        <p>Regent Street</p>
+        <p>£300</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="gap"></div>
+      <div class="square" id='19'>
+        <p>Vine Street</p>
+        <p>£200</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="square" id='29'>
+        <p>GO TO JAIL</p>
+        <p>👮🏻‍♀️</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="square" id='28'>
+        <p>Piccadilly</p>
+        <p>£280</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="square" id='27'>
+        <p>Water Works</p>
+        <p>£150</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="square" id='26'>
+        <p>Coventry Street</p>
+        <p>£260</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="square" id='25'>
+        <p>Leicershire Square</p>
+        <p>£260</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="square" id='24'>
+        <p>Fenchurch Street Station</p>
+        <p>£300</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="square" id='23'>
+        <p>Trafalger Square</p>
+        <p>£240</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="square" id='22'>
+        <p>Fleet Street</p>
+        <p>£220</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="square" id='21'>
+        <p>Chance</p>
+        <p>?</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="square" id='20'>
+        <p>Strand</p>
+        <p>£220</p>
+        <div class='player1'></div>
+        <div class='player2'></div>
+      </div>
+      <div class="square" id='19'>
+        <p>Free Parking</p>
+        <p>-</p>
         <div class='player1'></div>
         <div class='player2'></div>
       </div>
     </div>
-  </body>
+
+    <div class="controls">
+      <p class="playerTurn"></p>
+      <p class="die1">0</p>
+      <p class="die2">0</p>
+      <button class='rollButton'>Roll</button>
+    </div>
+  </div>
+</body>
 </html>
