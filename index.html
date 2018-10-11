@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>Monopoly</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="app.js" charset="utf-8"></script>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -75,7 +76,7 @@
         <div class='player1'></div>
         <div class='player2'></div>
       </div>
-      <div class="square" id='38'>
+      <div class="square" id='39'>
         <p>Mayfair</p>
         <p>£400</p>
         <div class='player1'></div>
@@ -88,7 +89,7 @@
         <div class='player1'></div>
         <div class='player2'></div>
       </div>
-      <div class="square" id='37'>
+      <div class="square" id='38'>
         <p>Super Tax</p>
         <p>£100</p>
         <div class='player1'></div>
@@ -101,7 +102,7 @@
         <div class='player1'></div>
         <div class='player2'></div>
       </div>
-      <div class="square" id='36'>
+      <div class="square" id='37'>
         <p>Park Lane</p>
         <p>£350</p>
         <div class='player1'></div>
@@ -114,7 +115,7 @@
         <div class='player1'></div>
         <div class='player2'></div>
       </div>
-      <div class="square" id='35'>
+      <div class="square" id='36'>
         <p>Chance</p>
         <p>?</p>
         <div class='player1'></div>
@@ -127,7 +128,7 @@
         <div class='player1'></div>
         <div class='player2'></div>
       </div>
-      <div class="square" id='34'>
+      <div class="square" id='35'>
         <p>Liverpool Street Station</p>
         <p>£200</p>
         <div class='player1'></div>
@@ -140,7 +141,7 @@
         <div class='player1'></div>
         <div class='player2'></div>
       </div>
-      <div class="square" id='33'>
+      <div class="square" id='34'>
         <p>Bond Street</p>
         <p>£320</p>
         <div class='player1'></div>
@@ -153,7 +154,7 @@
         <div class='player1'></div>
         <div class='player2'></div>
       </div>
-      <div class="square" id='32'>
+      <div class="square" id='33'>
         <p>Community Chest</p>
         <p>?</p>
         <div class='player1'></div>
@@ -166,7 +167,7 @@
         <div class='player1'></div>
         <div class='player2'></div>
       </div>
-      <div class="square" id='31'>
+      <div class="square" id='32'>
         <p>Oxford Street</p>
         <p>£300</p>
         <div class='player1'></div>
@@ -179,7 +180,7 @@
         <div class='player1'></div>
         <div class='player2'></div>
       </div>
-      <div class="square" id='30'>
+      <div class="square" id='31'>
         <p>Regent Street</p>
         <p>£300</p>
         <div class='player1'></div>
@@ -265,6 +266,10 @@
       <p class="die1">0</p>
       <p class="die2">0</p>
       <button class='rollButton'>Roll</button>
+      <button class='buy'>Buy</button>
+      <p>Player 1 Money = £<span id="player1Money">1000</span></p>
+      <p>Player 2 Money = £<span id="player2Money">1000</span></p>
+      <h2 class='display'></h2>
     </div>
   </div>
 </body>
