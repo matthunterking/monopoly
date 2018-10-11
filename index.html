@@ -28,8 +28,8 @@
       <div class='square' id='currentSquare'>
         <div class='squareColor' id='currentSquareColor'></div>
         <h2 class='currentSquareName'>Go</h2>
-        <h2 id='currentSquareValue'>£100</h2>
-        <h2 id='currentSquareOwner'>-</h2>
+        <h2><span id='currentSquareValue'></span></h2>
+        <h2><span id='currentSquareOwner'></span></h2>
         <div class="playersContainer">
           <div class='playerContainer' id='player1PieceCurrentSquare'></div>
           <div class='playerContainer' id='player2PieceCurrentSquare'></div>
@@ -49,7 +49,7 @@
   <div class="playerInfoPlane">
     <div>
       <h1>Name: <span id='playerName'>Player 1</span></h1>
-      <h1>Money: £<span id='playerName'>100</span></h1>
+      <h1>Money: £<span id='playerMoney'>1000</span></h1>
     </div>
     <div>
       <div class='die' id='die1'>0</div>
@@ -57,7 +57,7 @@
       <button id="rollButton">Roll</button>
     </div>
     <div>
-      <button>Buy <span class='currentSquareName'></span></button>
+      <button id='buyButton'>Buy <span class='currentSquareName'></span></button>
     </div>
   </div>
 </body>
