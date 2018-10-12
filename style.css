@@ -67,9 +67,10 @@ body {
   padding-top: 30px;
 }
 
-.moving {
+.movingPlayer1 {
   animation: moving 0.5s infinite;
   padding-bottom: 0px;
+  background-image: url('./images/dog.jpeg');
 }
 
 @keyframes moving {

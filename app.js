@@ -32,16 +32,16 @@ const angelIslington = new Square(6, 'The Angel Islington', 100, 6, lightBlue, t
 const chance1 = new Square(7, 'Chance', null, null, 'white', false);
 const eustonRoad = new Square(8, 'Euston Road', 100, 6, lightBlue, true);
 const pentonvilleRoad = new Square(9, 'Pentonville Road', 120, 8, lightBlue, true);
-const jail = new Square(10, 'Jail', null, null, 'white', false);
-const pallMall = new Square(11, 'Pall Mall', 140, 10, pink, true);
-const electric = new Square(12, 'Electric Company', 150, 20, 'white', true);
-const whitehall = new Square(13, 'Whitehall', 140, 10, pink, true);
-const northumberLand = new Square(14, 'NorthumberLand Road', 160, 12, pink, true);
-const fenchurch = new Square(15, 'Fenchurch Street Station', 200, 25, 'white', true);
-const bow = new Square(16, 'Bow Street', 180, 14, orange, true);
-const communityChest2 = new Square(17, 'Community Chest', null, null, false);
-const marlborough = new Square(18, 'Marlborough Street', 180, 14, orange, true);
-const vine = new Square(19, 'Vine Street', 200, 16, orange, true);
+// const jail = new Square(10, 'Jail', null, null, 'white', false);
+// const pallMall = new Square(11, 'Pall Mall', 140, 10, pink, true);
+// const electric = new Square(12, 'Electric Company', 150, 20, 'white', true);
+// const whitehall = new Square(13, 'Whitehall', 140, 10, pink, true);
+// const northumberLand = new Square(14, 'NorthumberLand Road', 160, 12, pink, true);
+// const fenchurch = new Square(15, 'Fenchurch Street Station', 200, 25, 'white', true);
+// const bow = new Square(16, 'Bow Street', 180, 14, orange, true);
+// const communityChest2 = new Square(17, 'Community Chest', null, null, false);
+// const marlborough = new Square(18, 'Marlborough Street', 180, 14, orange, true);
+// const vine = new Square(19, 'Vine Street', 200, 16, orange, true);
   // 20: new Square(20, null, null),
   // 21: new Square(21, 220, 18),
   // 22: new Square(22, null, null),
@@ -66,7 +66,8 @@ const vine = new Square(19, 'Vine Street', 200, 16, orange, true);
   // const Mayfair = new Square('Mayfair', 400, 50, 'darkBlue', true);
 
 const board = [ go, oldKentRoad, communityChest1, whitechapelRoad, incomeTax,
-  kingsCross, angelIslington, chance1, eustonRoad, pentonvilleRoad, jail
+  kingsCross, angelIslington, chance1, eustonRoad, pentonvilleRoad
+  // jail,
   // pallMall, electric, whitehall, northumberLand, fenchurch, bow, communityChest2,
   // marlborough, vine
 ];
@@ -151,50 +152,40 @@ $(() => {
       this.currentSquare = board[0];
       this.color = color;
     }
-    roll() {
-      const distance = rollDice();
+    roll(distance) {
       this.movePlayer(distance);
       Object.keys(displayedSquares).forEach(square => displayedSquares[square].updateSquareDisplay());
-      // if(currentSquare.owner) {
-      //   if(currentSquare.owner.name !== this.name) {
-      //     payRent();
-      //   }
-      // } else {
-      //   // makeBuyAvaible();
-      // }
-      // // endTurn();
     }
     movePlayer(distance) {
-      // if(this.name === 'Player 1') {
-      //   currentSquare.player1 = false;
-      // } else {
-      //   currentSquare.player2 = false;
-      // }
-      // this.location += distance;
-      // if(this.location >= board.length) {
-      //   this.location = board.length - (this.location - board.length);
-      //   this.money += 200;
-      // }
-      // this.currentSquare = board[this.location];
-      //
-      // if(this.location === 0){
-      //   previousSquare = board[board.length - 1];
-      // } else {
-      //   previousSquare = board[this.location - 1];
-      // }
-      // if(this.location === board.length -1) {
-      //   nextSquare = board[0];
-      // } else {
-      //   nextSquare = board[this.location + 1];
-      // }
-      //
-      // currentSquare = board[this.location];
-      //
-      // if(this.name === 'Player 1') {
-      //   currentSquare.player1 = true;
-      // } else {
-      //   currentSquare.player2 = true;
-      // }
+      if(this.name === 'Player 1') {
+        board[this.location].player1 = false;
+      } else {
+        board[this.location].player2 = false;
+      }
+      this.location += distance;
+      if(this.location >= board.length) {
+        this.location = board.length - (this.location - board.length);
+        this.money += 200;
+      }
+      if(this.name === 'Player 1') {
+        board[this.location].player1 = true;
+      } else {
+        board[this.location].player2 = true;
+      }
+      this.currentSquare = board[this.location];
+
+      if(this.currentSquare.canBeBrought && !this.currentSquare.owner) {
+        this.buy();
+      } else if(this.rent) {
+        this.payRent();
+      }
+      endTurn();
+    }
+    buy() {
+      console.log('buy!');
+    }
+    payRent() {
+      console.log('rent!');
     }
   }
 
@@ -239,20 +230,34 @@ $(() => {
   //   $buyButton.off('click');
   // }
 
-  // function endTurn() {
-  //   $endTurnButton.on('click', () => {
-  //     if(!doubles) {
-  //       isPlayer1Turn = !isPlayer1Turn;
-  //     }
-  //     isPlayer1Turn ? currentPlayer = player1 : currentPlayer = player2;
-  //     setUp();
-  //     $endTurnButton.off('click');
-  //     $rollButton.on('click', () => {
-  //       isPlayer1Turn ? player1.roll() : player2.roll();
-  //       $rollButton.off('click');
-  //     });
-  //   });
-  // }
+  function endTurn() {
+    $endTurnButton.on('click', () => {
+      if(!doubles) {
+        isPlayer1Turn = !isPlayer1Turn;
+      }
+      const oldLocation = currentPlayer.location;
+      isPlayer1Turn ? currentPlayer = player1 : currentPlayer = player2;
+      const newLocation = currentPlayer.location;
+      let direction;
+      let distance;
+      if(newLocation > oldLocation) {
+        direction = 'backwards';
+        distance = newLocation - oldLocation;
+      } else if(newLocation < oldLocation) {
+        direction = 'forwards';
+        distance = newLocation - oldLocation;
+      } else {
+        distance = 0;
+      }
+
+      moveBoard(direction, distance, true, currentPlayer.location);
+      $endTurnButton.off('click');
+      $rollButton.on('click', () => {
+        isPlayer1Turn ? player1.roll() : player2.roll();
+        $rollButton.off('click');
+      });
+    });
+  }
 
   // function makeBuyAvaible() {
   //   console.log('buy!!!');
@@ -267,19 +272,29 @@ $(() => {
   //   $description.html(' is on ');
   // }
 
-  function moveBoard(direction, numberOfSpaces, preview) {
+  function moveBoard(direction, numberOfSpaces, preview, fastTravelLocation) {
     const forward = direction === 'forward';
+    let time;
+
+    if(fastTravelLocation !== null) {
+      time = 10;
+    } else {
+      time = 1000;
+    }
+
 
     let newPreviousIndex;
     let newNextIndex;
     let i = 0;
 
-
     const moveInterval = setInterval(() => {
       $description.html(' is moving past ');
       const currentLocation = displayedSquares.current.assignedLocation;
+
       let newCurrentIndex;
+
       forward ?  newCurrentIndex = currentLocation.index + 1 : newCurrentIndex = currentLocation.index - 1;
+
 
       const lastBoardElement = board.length - 1;
 
@@ -312,34 +327,39 @@ $(() => {
 
       if(!preview) {
         if(currentPlayer.name === 'Player 1') {
-          displayedSquares.current.$player1Piece.addClass('moving');
+          displayedSquares.current.$player1Piece.addClass('movingPlayer1');
         } else {
-          displayedSquares.current.$player2Piece.addClass('moving');
+          displayedSquares.current.$player2Piece.addClass('movingPlayer2');
         }
       }
       i ++;
 
-
+      console.log(i, numberOfSpaces);
       if(i === numberOfSpaces) {
         clearInterval(moveInterval);
         $description.html(' is on ');
-        displayedSquares.current.$player1Piece.removeClass('moving');
-        displayedSquares.current.$player2Piece.removeClass('moving');
+        displayedSquares.current.$player1Piece.removeClass('movingPlayer1');
+        displayedSquares.current.$player2Piece.removeClass('movingPlayer2');
+        isPlayer1Turn ? player1.roll() : player2.roll();
       }
-    }, 1000);
+    }, time);
   }
 
   function setUp() {
     $playerName.html(currentPlayer.name);
     $description.html(' is on ');
 
+    board[0].player1 = true;
+    board[0].player2 = true;
+
     Object.keys(displayedSquares).forEach(square => {
       displayedSquares[square].updateSquareDisplay();
     });
-    $previewForward.on('click', () => moveBoard('forward', 5, false));
-    $previewBackwards.on('click', () => moveBoard('backwards', 5, true));
+    $previewForward.on('click', () => moveBoard('forward', 1, true, null));
+    $previewBackwards.on('click', () => moveBoard('backwards', 1, true, null));
     $rollButton.on('click', () => {
-      isPlayer1Turn ? player1.roll() : player2.roll();
+      const distance = rollDice();
+      moveBoard('forward', distance, false, null);
       $rollButton.off('click');
     });
   }
