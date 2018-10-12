@@ -66,3 +66,17 @@ body {
   justify-content: space-around;
   padding-top: 30px;
 }
+
+.moving {
+  animation: moving 0.5s infinite;
+  padding-bottom: 0px;
+}
+
+@keyframes moving {
+  from {
+    padding-bottom: 0px;
+  }
+  to {
+    padding-bottom: 3px;
+  }
+}

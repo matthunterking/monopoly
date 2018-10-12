@@ -267,7 +267,7 @@ $(() => {
   //   $description.html(' is on ');
   // }
 
-  function moveBoard(direction, numberOfSpaces) {
+  function moveBoard(direction, numberOfSpaces, preview) {
     const forward = direction === 'forward';
 
     let newPreviousIndex;
@@ -309,10 +309,22 @@ $(() => {
       Object.keys(displayedSquares).forEach(square => {
         displayedSquares[square].updateSquareDisplay();
       });
+
+      if(!preview) {
+        if(currentPlayer.name === 'Player 1') {
+          displayedSquares.current.$player1Piece.addClass('moving');
+        } else {
+          displayedSquares.current.$player2Piece.addClass('moving');
+        }
+      }
       i ++;
+
+
       if(i === numberOfSpaces) {
         clearInterval(moveInterval);
         $description.html(' is on ');
+        displayedSquares.current.$player1Piece.removeClass('moving');
+        displayedSquares.current.$player2Piece.removeClass('moving');
       }
     }, 1000);
   }
@@ -324,8 +336,8 @@ $(() => {
     Object.keys(displayedSquares).forEach(square => {
       displayedSquares[square].updateSquareDisplay();
     });
-    $previewForward.on('click', () => moveBoard('forward', 5));
-    $previewBackwards.on('click', () => moveBoard('backwards', 5));
+    $previewForward.on('click', () => moveBoard('forward', 5, false));
+    $previewBackwards.on('click', () => moveBoard('backwards', 5, true));
     $rollButton.on('click', () => {
       isPlayer1Turn ? player1.roll() : player2.roll();
       $rollButton.off('click');
