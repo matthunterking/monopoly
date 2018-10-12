@@ -267,54 +267,54 @@ $(() => {
   //   $description.html(' is on ');
   // }
 
-  function moveBoard(direction) {
+  function moveBoard(direction, numberOfSpaces) {
     const forward = direction === 'forward';
-    console.log('forward', forward);
 
     let newPreviousIndex;
     let newNextIndex;
-
-    const currentLocation = displayedSquares.current.assignedLocation;
-    let newCurrentIndex;
-    forward ?  newCurrentIndex = currentLocation.index + 1 : newCurrentIndex = currentLocation.index - 1;
-
-    const lastBoardElement = board.length - 1;
-
-    if(newCurrentIndex === 0) {
-      newPreviousIndex = lastBoardElement;
-      newNextIndex = newCurrentIndex + 1;
-    } else if(newCurrentIndex < 0) {
-      newCurrentIndex = lastBoardElement;
-      newNextIndex = 0;
-      newPreviousIndex = newCurrentIndex - 1;
-    } else if(newCurrentIndex === lastBoardElement) {
-      newPreviousIndex = newCurrentIndex - 1;
-      newNextIndex = 0;
-    } else if(newCurrentIndex > lastBoardElement) {
-      newCurrentIndex = 0;
-      newPreviousIndex = lastBoardElement;
-      newNextIndex = 1;
-    } else if(newCurrentIndex !== 0 && newCurrentIndex !== lastBoardElement) {
-      newPreviousIndex = newCurrentIndex - 1;
-      newNextIndex = newCurrentIndex + 1;
-    }
-
-    displayedSquares.current.assignedLocation = board[newCurrentIndex];
-    displayedSquares.previous.assignedLocation = board[newPreviousIndex];
-    displayedSquares.next.assignedLocation = board[newNextIndex];
-
-    Object.keys(displayedSquares).forEach(square => {
-      displayedSquares[square].updateSquareDisplay();
-    });
+    let i = 0;
 
 
+    const moveInterval = setInterval(() => {
+      $description.html(' is moving past ');
+      const currentLocation = displayedSquares.current.assignedLocation;
+      let newCurrentIndex;
+      forward ?  newCurrentIndex = currentLocation.index + 1 : newCurrentIndex = currentLocation.index - 1;
 
-//NOTE: FIX THIS ⬆️🤮
+      const lastBoardElement = board.length - 1;
 
+      if(newCurrentIndex === 0) {
+        newPreviousIndex = lastBoardElement;
+        newNextIndex = newCurrentIndex + 1;
+      } else if(newCurrentIndex < 0) {
+        newCurrentIndex = lastBoardElement;
+        newNextIndex = 0;
+        newPreviousIndex = newCurrentIndex - 1;
+      } else if(newCurrentIndex === lastBoardElement) {
+        newPreviousIndex = newCurrentIndex - 1;
+        newNextIndex = 0;
+      } else if(newCurrentIndex > lastBoardElement) {
+        newCurrentIndex = 0;
+        newPreviousIndex = lastBoardElement;
+        newNextIndex = 1;
+      } else if(newCurrentIndex !== 0 && newCurrentIndex !== lastBoardElement) {
+        newPreviousIndex = newCurrentIndex - 1;
+        newNextIndex = newCurrentIndex + 1;
+      }
 
-    // Object.keys(displayedSquares).forEach(square => {
-    //   displayedSquares[square].updateSquareDisplay();
-    // });
+      displayedSquares.current.assignedLocation = board[newCurrentIndex];
+      displayedSquares.previous.assignedLocation = board[newPreviousIndex];
+      displayedSquares.next.assignedLocation = board[newNextIndex];
+
+      Object.keys(displayedSquares).forEach(square => {
+        displayedSquares[square].updateSquareDisplay();
+      });
+      i ++;
+      if(i === numberOfSpaces) {
+        clearInterval(moveInterval);
+        $description.html(' is on ');
+      }
+    }, 1000);
   }
 
   function setUp() {
@@ -324,8 +324,8 @@ $(() => {
     Object.keys(displayedSquares).forEach(square => {
       displayedSquares[square].updateSquareDisplay();
     });
-    $previewForward.on('click', () => moveBoard('forward'));
-    $previewBackwards.on('click', () => moveBoard('backwards'));
+    $previewForward.on('click', () => moveBoard('forward', 5));
+    $previewBackwards.on('click', () => moveBoard('backwards', 5));
     $rollButton.on('click', () => {
       isPlayer1Turn ? player1.roll() : player2.roll();
       $rollButton.off('click');
