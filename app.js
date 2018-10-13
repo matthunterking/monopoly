@@ -70,11 +70,20 @@ const board = [ go, oldKentRoad, communityChest1, whitechapelRoad, incomeTax,
   water, pic, goToJail, regent, ox, communityChest3, bond, liv, chance3, park, superTax, Mayfair
 ];
 
+class Player {
+  constructor(name, piece, color) {
+    this.name = name;
+    this.piece = piece;
+    this.money = 1000;
+    this.location = 0;
+    this.currentSquare = board[0];
+    this.color = color;
+  }
+}
+
 
 
 $(() => {
-  let isPlayer1Turn = true;
-  let currentPlayer;
   let doubles = false;
 
   const $boardContainer = $('.boardContainer');
@@ -91,11 +100,11 @@ $(() => {
   const $previewBackwards = $('#previewBackwards');
 
   $previewForward.on('click', () => {
-    moveSquares(2, true, true);
+    moveSquares(2, true, true, true);
   });
 
   $previewBackwards.on('click', () => {
-    moveSquares(2, true, false);
+    moveSquares(2, true, false, true);
   });
 
 
@@ -106,9 +115,12 @@ $(() => {
     $('#die2').html(die2);
     if(die1 === die2) {
       doubles = true;
+    } else {
+      doubles = false;
     }
     const distance = die1 + die2;
-    moveSquares(distance, false, true);
+    currentPlayer.location += distance;
+    moveSquares(distance, false, true, false);
   }
 
   // let complete = true;
@@ -140,10 +152,22 @@ $(() => {
 
 
   // element 3 in the displaySquares is the current!
-  let displayedSquares = [12, 13, 14, 15, 16, 17, 18 ];
+  let displayedSquares = [37, 38, 39, 0, 1, 2, 3 ];
   let stepsRemaining = 0;
 
-  function moveSquares(numberOfSteps, fast, forward) {
+  const player1 = new Player('Player 1', 'dog', 'pink');
+  const player2 = new Player('Player 2', 'car', 'lime');
+
+  let currentPlayer = player1;
+
+  function setUp() {
+    board[0].player1 = true;
+    board[0].player2 = true;
+    updateDisplayedSquares();
+    $rollButton.on('click', () => rollDice());
+  }
+
+  function moveSquares(numberOfSteps, fast, forward, preview) {
     let time1;
     let time2;
     let newDisplay;
@@ -180,8 +204,6 @@ $(() => {
       });
     }
 
-    console.log(newDisplay);
-
     const newDiv = $(`<div class='square' id='${newDisplay[index]}'>
     <div class='squareColor' id='${newDisplay[index]}SquareColor'></div>
     <h2 class='${displayedSquares[index]}SquareName'></h2>
@@ -207,6 +229,18 @@ $(() => {
         oldDiv.css('width', `${300-j}px`);
         j += 5;
       } else {
+        if(!preview) {
+          if(currentPlayer.name === 'Player 1') {
+            board[newDisplay[2]].player1 = false;
+            $(`#${newDisplay[2]}player1Piece`).css('backgroundImage', '');
+            board[newDisplay[3]].player1 = true;
+          } else {
+            board[newDisplay[2]].player2 = false;
+            $(`#${newDisplay[2]}player2Piece`).css('backgroundImage', '');
+            board[newDisplay[3]].player2 = true;
+          }
+
+        }
         stepsRemaining --;
         oldDiv.remove();
         updateDisplayedSquares();
@@ -214,15 +248,31 @@ $(() => {
         clearInterval(move);
         setTimeout(() => {
           if(stepsRemaining !== 0) {
-            moveSquares(stepsRemaining, fast, forward);
+            moveSquares(stepsRemaining, fast, forward, preview);
+          } else {
+            if(!doubles && !preview) {
+              let goToNextPlayerDistance = 0;
+              let otherPlayer;
+              currentPlayer.name === 'Player 1' ? otherPlayer = player2 : otherPlayer = player1;
+
+              if(otherPlayer.location < currentPlayer.location) {
+                goToNextPlayerDistance = currentPlayer.location - otherPlayer.location;
+              } else {
+                goToNextPlayerDistance = currentPlayer.location + (39 - otherPlayer.location);
+              }
+
+              currentPlayer = otherPlayer;
+              $endTurnButton.on('click', () => moveSquares(goToNextPlayerDistance, true, false, true));
+            }
           }
         }, time1);
       }
     }, time2);
+
   }
 
   function updateDisplayedSquares() {
-
+    // console.log(displayedSquares);
     displayedSquares.forEach(position => {
       const $squareColor = $(`#${position}SquareColor`);
       const $squareName = $(`.${position}SquareName`);
@@ -232,16 +282,18 @@ $(() => {
       const $player1Piece = $(`#${position}player1Piece`);
       const $player2Piece = $(`#${position}player2Piece`);
       $squareName.html(board[position].name);
-      $squareValue.html(board[position].price);
+      $squareValue.html(`£${board[position].price}`);
       $squareColor.css('backgroundColor', board[position].color);
+      if(board[position].player1) {
+        $player1Piece.css('backgroundImage', `url(./images/${player1.piece}.jpeg)`);
+      }
+      if(board[position].player2) {
+        $player2Piece.css('backgroundImage', `url(./images/${player2.piece}.jpeg)`);
+      }
     })
   }
 
 
-  function setUp() {
-    updateDisplayedSquares();
-    $rollButton.on('click', () => rollDice());
-  }
 
   setUp();
 
