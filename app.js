@@ -39,7 +39,7 @@ const whitehall = new Square(13, 'Whitehall', 140, 10, pink, true);
 const northumberLand = new Square(14, 'NorthumberLand Road', 160, 12, pink, true);
 const fenchurch = new Square(15, 'Fenchurch Street Station', 200, 25, 'white', true);
 const bow = new Square(16, 'Bow Street', 180, 14, orange, true);
-const communityChest2 = new Square(17, 'Community Chest', null, null, false);
+const communityChest2 = new Square(17, 'Community Chest', null, null, 'white', false);
 const marlborough = new Square(18, 'Marlborough Street', 180, 14, orange, true);
 const vine = new Square(19, 'Vine Street', 200, 16, orange, true);
 const freeParking = new Square(20, 'Free Parking', null, null, 'white', false);
@@ -70,6 +70,8 @@ const board = [ go, oldKentRoad, communityChest1, whitechapelRoad, incomeTax,
   water, pic, goToJail, regent, ox, communityChest3, bond, liv, chance3, park, superTax, Mayfair
 ];
 
+
+
 $(() => {
   let isPlayer1Turn = true;
   let currentPlayer;
@@ -88,6 +90,14 @@ $(() => {
   const $previewForward = $('#previewForward');
   const $previewBackwards = $('#previewBackwards');
 
+  $previewForward.on('click', () => {
+    moveSquares(2, true, true);
+  });
+
+  $previewBackwards.on('click', () => {
+    moveSquares(2, true, false);
+  });
+
 
   function rollDice() {
     const die1 = Math.floor(Math.random() * 6) + 1;
@@ -97,74 +107,122 @@ $(() => {
     if(die1 === die2) {
       doubles = true;
     }
-    return die1 + die2;
+    const distance = die1 + die2;
+    moveSquares(distance, false, true);
   }
 
-  let complete = true;
-  let i = 0;
+  // let complete = true;
+  // let i = 0;
 
-  function moveBoard(startLocation, numberOfSpaces, preview, fastTravelLocation) {
-    let newLocation = startLocation + numberOfSpaces;
-    let removeStart = displayedSquares[0];
-    let spacesRemaining = numberOfSpaces;
+  // function moveBoard(startLocation, numberOfSpaces, preview, fastTravelLocation) {
+  //   let newLocation = startLocation + numberOfSpaces;
+  //   let removeStart = displayedSquares[0];
+  //   let spacesRemaining = numberOfSpaces;
+  //
+  //   console.log(removeStart, newLocation);
+  //   //TODO Sort out end of board
+  //   let newDisplay;
+  //   newDisplay = displayedSquares.map(square => square +1);
+  //   moveSquares(numberOfSpaces);
+  //   spacesRemaining -= 1;
+  //   if(spacesRemaining) {
+  //     displayedSquares = newDisplay;
+  //     moveBoard(0, spacesRemaining, false, false);
+  //   }
 
-    console.log(removeStart, newLocation);
-    //TODO Sort out end of board
+//TODO Can I combine Moveborad with moveSquares ??? So that if the step is complete
+//it will move onto the next one.
+
+
+
+  //   updateDisplayedSquares();
+  // }
+
+
+  // element 3 in the displaySquares is the current!
+  let displayedSquares = [12, 13, 14, 15, 16, 17, 18 ];
+  let stepsRemaining = 0;
+
+  function moveSquares(numberOfSteps, fast, forward) {
+    let time1;
+    let time2;
     let newDisplay;
-    newDisplay = displayedSquares.map(square => square +1);
-    moveSquares(displayedSquares[0], newDisplay);
-    displayedSquares = newDisplay;
-    spacesRemaining -= 1;
-    if(spacesRemaining) {
-      moveBoard(0, spacesRemaining, false, false);
+    let remove;
+    let index;
+    if(fast) {
+      time1 = 15;
+      time2 = 1;
+    } else {
+      time1 = 250;
+      time2 = 20;
+    }
+    stepsRemaining = numberOfSteps;
+    let j = 0;
+    if(forward) {
+      remove = displayedSquares[0];
+      index = 6;
+      newDisplay = displayedSquares.map(square => {
+        if(square >= 39) {
+          return square = 0;
+        } else {
+          return square +1;
+        }
+      });
+    } else {
+      remove = displayedSquares[6];
+      index = 0;
+      newDisplay = displayedSquares.map(square => {
+        if(square <= 0) {
+          return square = 39;
+        } else {
+          return square - 1;
+        }
+      });
     }
 
+    console.log(newDisplay);
 
-
-
-
-    updateDisplayedSquares();
-  }
-
-
-
-  let displayedSquares = [12, 13, 14, 15, 16, 17 ];
-
-  function moveSquares(remove, displayedSquares) {
-
-    const newDiv = $(`<div class='square' id='${displayedSquares[5]}'>
-    <div class='squareColor' id='${displayedSquares[5]}SquareColor'></div>
-      <h2 class='${displayedSquares[5]}SquareName'></h2>
-      <h2 id='${displayedSquares[5]}SquareValue'></h2>
-      <h2 id='${displayedSquares[5]}SquareOwner'></h2>
-      <div class="playersContainer">
-        <div class='playerContainer' id='${displayedSquares[5]}player1Piece'></div>
-        <div class='playerContainer' id='${displayedSquares[5]}player2Piece'></div>
-      </div>
-    </div>`);
-
-    console.log(newDiv);
+    const newDiv = $(`<div class='square' id='${newDisplay[index]}'>
+    <div class='squareColor' id='${newDisplay[index]}SquareColor'></div>
+    <h2 class='${displayedSquares[index]}SquareName'></h2>
+    <h2 id='${displayedSquares[index]}SquareValue'></h2>
+    <h2 id='${displayedSquares[index]}SquareOwner'></h2>
+    <div class="playersContainer">
+      <div class='playerContainer' id='${displayedSquares[index]}player1Piece'></div>
+      <div class='playerContainer' id='${displayedSquares[index]}player2Piece'></div>
+    </div>
+  </div>`);
     const oldDiv = $(`#${remove}`);
-    console.log(oldDiv);
 
-    $boardContainer.append(newDiv);
+
+    if(forward) {
+      $boardContainer.append(newDiv);
+    } else {
+      $boardContainer.prepend(newDiv);
+    }
     updateDisplayedSquares();
-    let j = 0;
     const move = setInterval(function() {
       if(j < 300) {
         newDiv.css('width', `${j}px`);
         oldDiv.css('width', `${300-j}px`);
         j += 5;
       } else {
-        clearInterval(move);
+        stepsRemaining --;
         oldDiv.remove();
+        updateDisplayedSquares();
+        displayedSquares = newDisplay;
+        clearInterval(move);
+        setTimeout(() => {
+          if(stepsRemaining !== 0) {
+            moveSquares(stepsRemaining, fast, forward);
+          }
+        }, time1);
       }
-    }, 20);
+    }, time2);
   }
 
   function updateDisplayedSquares() {
 
-    //Need to work out how to chance the id's of the new display?
     displayedSquares.forEach(position => {
       const $squareColor = $(`#${position}SquareColor`);
       const $squareName = $(`.${position}SquareName`);
@@ -174,6 +232,7 @@ $(() => {
       const $player1Piece = $(`#${position}player1Piece`);
       const $player2Piece = $(`#${position}player2Piece`);
       $squareName.html(board[position].name);
+      $squareValue.html(board[position].price);
       $squareColor.css('backgroundColor', board[position].color);
     })
   }
@@ -181,8 +240,7 @@ $(() => {
 
   function setUp() {
     updateDisplayedSquares();
-    const distance = rollDice();
-    moveBoard(14, distance, false, false);
+    $rollButton.on('click', () => rollDice());
   }
 
   setUp();
