@@ -32,44 +32,42 @@ const angelIslington = new Square(6, 'The Angel Islington', 100, 6, lightBlue, t
 const chance1 = new Square(7, 'Chance', null, null, 'white', false);
 const eustonRoad = new Square(8, 'Euston Road', 100, 6, lightBlue, true);
 const pentonvilleRoad = new Square(9, 'Pentonville Road', 120, 8, lightBlue, true);
-// const jail = new Square(10, 'Jail', null, null, 'white', false);
-// const pallMall = new Square(11, 'Pall Mall', 140, 10, pink, true);
-// const electric = new Square(12, 'Electric Company', 150, 20, 'white', true);
-// const whitehall = new Square(13, 'Whitehall', 140, 10, pink, true);
-// const northumberLand = new Square(14, 'NorthumberLand Road', 160, 12, pink, true);
-// const fenchurch = new Square(15, 'Fenchurch Street Station', 200, 25, 'white', true);
-// const bow = new Square(16, 'Bow Street', 180, 14, orange, true);
-// const communityChest2 = new Square(17, 'Community Chest', null, null, false);
-// const marlborough = new Square(18, 'Marlborough Street', 180, 14, orange, true);
-// const vine = new Square(19, 'Vine Street', 200, 16, orange, true);
-  // 20: new Square(20, null, null),
-  // 21: new Square(21, 220, 18),
-  // 22: new Square(22, null, null),
-  // 23: new Square(23, 220, 18),
-  // 24: new Square(24, 240, 20),
-  // 25: new Square(25, 200, 25),
-  // 26: new Square(26, 260, 22),
-  // 27: new Square(27, 260, 22),
-  // 28: new Square(28, 150, 20),
-  // 29: new Square(29, 280, 22),
-  // 30: new Square(30, null, null),
-  // 31: new Square(31, 300, 26),
-  // 32: new Square(32, 300, 26),
-  // 33: new Square(33, null, null),
-  // 34: new Square(34, 320, 28),
-  // 35: new Square(35, 200, 25),
-  // 36: new Square(36, null, null),
-  // 37: new Square(37, 350, 35),
-  // 38: new Square(38, null, null),
-  // 39: new Square(39, 400, 50)
-
-  // const Mayfair = new Square('Mayfair', 400, 50, 'darkBlue', true);
+const jail = new Square(10, 'Jail', null, null, 'white', false);
+const pallMall = new Square(11, 'Pall Mall', 140, 10, pink, true);
+const electric = new Square(12, 'Electric Company', 150, 20, 'white', true);
+const whitehall = new Square(13, 'Whitehall', 140, 10, pink, true);
+const northumberLand = new Square(14, 'NorthumberLand Road', 160, 12, pink, true);
+const fenchurch = new Square(15, 'Fenchurch Street Station', 200, 25, 'white', true);
+const bow = new Square(16, 'Bow Street', 180, 14, orange, true);
+const communityChest2 = new Square(17, 'Community Chest', null, null, false);
+const marlborough = new Square(18, 'Marlborough Street', 180, 14, orange, true);
+const vine = new Square(19, 'Vine Street', 200, 16, orange, true);
+const freeParking = new Square(20, 'Free Parking', null, null, 'white', false);
+const strand = new Square(21, 'Stand', 220, 18, red, true);
+const chance2 = new Square(22, 'Chance', null, null, 'white', false);
+const fleet = new Square(23, 'Fleet Street', 220, 18, red, true);
+const traf = new Square(24, 'Trafalger Square', 240, 20, red, true);
+const fen = new Square(25, 'Fenchurch Street Station', 200, 25, 'white', true);
+const leic = new Square(26, 'Leicershire Square', 260, 22, yellow, true);
+const cov = new Square(27, 'Coventry Street', 260, 22, yellow, true);
+const water = new Square(28, 'Water Works', 150, 20, 'white', true);
+const pic = new Square(29, 'Picadilly', 280, 22, yellow, true);
+const goToJail = new Square(30, 'Go to Jail', null, null,'white', false);
+const regent = new Square(31, 'Regent Street', 300, 26, green, true);
+const ox = new Square(32, 'Oxford Street', 300, 26, green, true);
+const communityChest3 = new Square(33, 'Community Chest', null, null, 'white', false);
+const bond = new Square(34, 'Bond Street', 320, 28, green, true);
+const liv = new Square(35, 'Liverpool Street Station', 200, 25, 'white', true);
+const chance3 = new Square(36, 'Chance', null, null, 'white', false);
+const park = new Square(37, 'Park Lane', 350, 35, darkBlue, true);
+const superTax = new Square(38, 'superTax', null, null, 'white', false);
+const Mayfair = new Square(39, 'Mayfair', 400, 50, 'darkBlue', true);
 
 const board = [ go, oldKentRoad, communityChest1, whitechapelRoad, incomeTax,
-  kingsCross, angelIslington, chance1, eustonRoad, pentonvilleRoad
-  // jail,
-  // pallMall, electric, whitehall, northumberLand, fenchurch, bow, communityChest2,
-  // marlborough, vine
+  kingsCross, angelIslington, chance1, eustonRoad, pentonvilleRoad, jail,
+  pallMall, electric, whitehall, northumberLand, fenchurch, bow, communityChest2,
+  marlborough, vine, freeParking, strand, chance2, fleet, traf, fen, leic, cov,
+  water, pic, goToJail, regent, ox, communityChest3, bond, liv, chance3, park, superTax, Mayfair
 ];
 
 $(() => {
@@ -77,9 +75,10 @@ $(() => {
   let currentPlayer;
   let doubles = false;
 
+  const $boardContainer = $('.boardContainer');
+
   const $playerName = $('#playerName');
   const $description = $('#description');
-
 
   const $playerMoney = $('#playerMoney');
 
@@ -88,112 +87,6 @@ $(() => {
   const $endTurnButton = $('#endTurnButton');
   const $previewForward = $('#previewForward');
   const $previewBackwards = $('#previewBackwards');
-
-  class DisplaySquare {
-    constructor(name, currentDisplayed) {
-      this.assignedLocation = currentDisplayed;
-      this.$squareColor = $(`#${name}SquareColor`);
-      this.$squareName = $(`.${name}SquareName`);
-      this.$squareValue = $(`#${name}SquareValue`);
-      this.$squareOwner = $(`#${name}SquareOwner`);
-      this.$square = $(`#${name}Square`);
-      this.$player1Piece = $(`#player1Piece${name}Square`);
-      this.$player2Piece = $(`#player2Piece${name}Square`);
-    }
-    updateSquareDisplay() {
-      let squareText = '-';
-
-      if(this.assignedLocation.canBeBrought && !this.assignedLocation.owner) {
-        squareText = 'For Sale';
-      } else if(this.assignedLocation.canBeBrought && this.assignedLocation.owner) {
-        squareText = `Owned by ${this.assignedLocation.owner.name}`;
-      }
-
-      this.$squareColor.css('backgroundColor', this.assignedLocation.color);
-
-      this.$squareName.html(this.assignedLocation.name);
-
-      this.$squareValue.html(this.assignedLocation.price || '-');
-
-      this.$squareOwner.html(squareText);
-
-      if(this.assignedLocation.owner) {
-        this.$square.css('backgroundColor', this.assignedLocation.owner.color);
-      } else {
-        this.$square.css('backgroundColor', 'rgb(199, 230, 197)');
-      }
-      if(this.assignedLocation.player1) {
-        this.$player1Piece.css('backgroundImage', `url(./images/${player1.piece}.jpeg)`);
-      } else {
-        this.$player1Piece.css('backgroundImage', '');
-      }
-      if(this.assignedLocation.player2) {
-        this.$player2Piece.css('backgroundImage', `url(./images/${player2.piece}.jpeg)`);
-      } else {
-        this.$player2Piece.css('backgroundImage', '');
-      }
-    }
-  }
-
-  const displayedSquares = {
-    previous: new DisplaySquare('previous', board[board.length -1]),
-    current: new DisplaySquare('current', board[0]),
-    next: new DisplaySquare('next', board[1])
-  };
-
-  console.log('displayedSquares', displayedSquares);
-
-  class Player {
-    constructor(name, piece, color) {
-      this.name = name;
-      this.piece = piece;
-      this.money = 1000;
-      this.location = 0;
-      this.currentSquare = board[0];
-      this.color = color;
-    }
-    roll(distance) {
-      this.movePlayer(distance);
-      Object.keys(displayedSquares).forEach(square => displayedSquares[square].updateSquareDisplay());
-    }
-    movePlayer(distance) {
-      if(this.name === 'Player 1') {
-        board[this.location].player1 = false;
-      } else {
-        board[this.location].player2 = false;
-      }
-      this.location += distance;
-      if(this.location >= board.length) {
-        this.location = board.length - (this.location - board.length);
-        this.money += 200;
-      }
-      if(this.name === 'Player 1') {
-        board[this.location].player1 = true;
-      } else {
-        board[this.location].player2 = true;
-      }
-      this.currentSquare = board[this.location];
-
-      if(this.currentSquare.canBeBrought && !this.currentSquare.owner) {
-        this.buy();
-      } else if(this.rent) {
-        this.payRent();
-      }
-      endTurn();
-    }
-    buy() {
-      console.log('buy!');
-    }
-    payRent() {
-      console.log('rent!');
-    }
-  }
-
-
-
-  const player1 = new Player('Player 1', 'dog', 'pink');
-  const player2 = new Player('Player 2', 'car', 'lime');
-
 
 
   function rollDice() {
@@ -207,164 +100,91 @@ $(() => {
     return die1 + die2;
   }
 
-  // function payRent() {
-  //   let otherPlayer;
-  //   if(isPlayer1Turn) {
-  //     otherPlayer = player2;
-  //   } else {
-  //     otherPlayer = player1;
-  //   }
-  //   displayedSquares.current.$square.css('backgroundColor', currentPlayer.color);
-  //   currentPlayer.money -= currentSquare.rent;
-  //   otherPlayer.money += currentSquare.rent;
-  //   $description.html(` pays ${otherPlayer.name} £${currentSquare.rent} for landing on `);
-  // }
+  let complete = true;
+  let i = 0;
 
-  // function buy() {
-  //   currentSquare.owner = currentPlayer;
-  //   displayedSquares.current.$square.css('backgroundColor', currentPlayer.color);
-  //   displayedSquares.current.$squareOwner.html(`Owned by ${currentPlayer.name}`);
-  //   currentPlayer.money -= currentSquare.price;
-  //   $playerMoney.html(currentPlayer.money);
-  //   $buyButton.css('backgroundColor', 'white');
-  //   $buyButton.off('click');
-  // }
+  function moveBoard(startLocation, numberOfSpaces, preview, fastTravelLocation) {
+    let newLocation = startLocation + numberOfSpaces;
+    let removeStart = displayedSquares[0];
+    let spacesRemaining = numberOfSpaces;
 
-  function endTurn() {
-    $endTurnButton.on('click', () => {
-      if(!doubles) {
-        isPlayer1Turn = !isPlayer1Turn;
-      }
-      const oldLocation = currentPlayer.location;
-      isPlayer1Turn ? currentPlayer = player1 : currentPlayer = player2;
-      const newLocation = currentPlayer.location;
-      let direction;
-      let distance;
-      if(newLocation > oldLocation) {
-        direction = 'backwards';
-        distance = newLocation - oldLocation;
-      } else if(newLocation < oldLocation) {
-        direction = 'forwards';
-        distance = newLocation - oldLocation;
-      } else {
-        distance = 0;
-      }
-
-      moveBoard(direction, distance, true, currentPlayer.location);
-      $endTurnButton.off('click');
-      $rollButton.on('click', () => {
-        isPlayer1Turn ? player1.roll() : player2.roll();
-        $rollButton.off('click');
-      });
-    });
-  }
-
-  // function makeBuyAvaible() {
-  //   console.log('buy!!!');
-  //   if(currentSquare.canBeBrought) {
-  //     $buyButton.css('backgroundColor', 'green');
-  //     $buyButton.on('click', buy);
-  //   }
-  // }
-
-  // function updatePlayerLocation() {
-  //   $playerName.html(currentPlayer.name);
-  //   $description.html(' is on ');
-  // }
-
-  function moveBoard(direction, numberOfSpaces, preview, fastTravelLocation) {
-    const forward = direction === 'forward';
-    let time;
-
-    if(fastTravelLocation !== null) {
-      time = 10;
-    } else {
-      time = 1000;
+    console.log(removeStart, newLocation);
+    //TODO Sort out end of board
+    let newDisplay;
+    newDisplay = displayedSquares.map(square => square +1);
+    moveSquares(displayedSquares[0], newDisplay);
+    displayedSquares = newDisplay;
+    spacesRemaining -= 1;
+    if(spacesRemaining) {
+      moveBoard(0, spacesRemaining, false, false);
     }
 
 
-    let newPreviousIndex;
-    let newNextIndex;
-    let i = 0;
-
-    const moveInterval = setInterval(() => {
-      $description.html(' is moving past ');
-      const currentLocation = displayedSquares.current.assignedLocation;
-
-      let newCurrentIndex;
-
-      forward ?  newCurrentIndex = currentLocation.index + 1 : newCurrentIndex = currentLocation.index - 1;
 
 
-      const lastBoardElement = board.length - 1;
 
-      if(newCurrentIndex === 0) {
-        newPreviousIndex = lastBoardElement;
-        newNextIndex = newCurrentIndex + 1;
-      } else if(newCurrentIndex < 0) {
-        newCurrentIndex = lastBoardElement;
-        newNextIndex = 0;
-        newPreviousIndex = newCurrentIndex - 1;
-      } else if(newCurrentIndex === lastBoardElement) {
-        newPreviousIndex = newCurrentIndex - 1;
-        newNextIndex = 0;
-      } else if(newCurrentIndex > lastBoardElement) {
-        newCurrentIndex = 0;
-        newPreviousIndex = lastBoardElement;
-        newNextIndex = 1;
-      } else if(newCurrentIndex !== 0 && newCurrentIndex !== lastBoardElement) {
-        newPreviousIndex = newCurrentIndex - 1;
-        newNextIndex = newCurrentIndex + 1;
-      }
-
-      displayedSquares.current.assignedLocation = board[newCurrentIndex];
-      displayedSquares.previous.assignedLocation = board[newPreviousIndex];
-      displayedSquares.next.assignedLocation = board[newNextIndex];
-
-      Object.keys(displayedSquares).forEach(square => {
-        displayedSquares[square].updateSquareDisplay();
-      });
-
-      if(!preview) {
-        if(currentPlayer.name === 'Player 1') {
-          displayedSquares.current.$player1Piece.addClass('movingPlayer1');
-        } else {
-          displayedSquares.current.$player2Piece.addClass('movingPlayer2');
-        }
-      }
-      i ++;
-
-      console.log(i, numberOfSpaces);
-      if(i === numberOfSpaces) {
-        clearInterval(moveInterval);
-        $description.html(' is on ');
-        displayedSquares.current.$player1Piece.removeClass('movingPlayer1');
-        displayedSquares.current.$player2Piece.removeClass('movingPlayer2');
-        isPlayer1Turn ? player1.roll() : player2.roll();
-      }
-    }, time);
+    updateDisplayedSquares();
   }
+
+
+
+  let displayedSquares = [12, 13, 14, 15, 16, 17 ];
+
+  function moveSquares(remove, displayedSquares) {
+
+    const newDiv = $(`<div class='square' id='${displayedSquares[5]}'>
+    <div class='squareColor' id='${displayedSquares[5]}SquareColor'></div>
+      <h2 class='${displayedSquares[5]}SquareName'></h2>
+      <h2 id='${displayedSquares[5]}SquareValue'></h2>
+      <h2 id='${displayedSquares[5]}SquareOwner'></h2>
+      <div class="playersContainer">
+        <div class='playerContainer' id='${displayedSquares[5]}player1Piece'></div>
+        <div class='playerContainer' id='${displayedSquares[5]}player2Piece'></div>
+      </div>
+    </div>`);
+
+    console.log(newDiv);
+    const oldDiv = $(`#${remove}`);
+    console.log(oldDiv);
+
+    $boardContainer.append(newDiv);
+    updateDisplayedSquares();
+    let j = 0;
+    const move = setInterval(function() {
+      if(j < 300) {
+        newDiv.css('width', `${j}px`);
+        oldDiv.css('width', `${300-j}px`);
+        j += 5;
+      } else {
+        clearInterval(move);
+        oldDiv.remove();
+      }
+    }, 20);
+  }
+
+  function updateDisplayedSquares() {
+
+    //Need to work out how to chance the id's of the new display?
+    displayedSquares.forEach(position => {
+      const $squareColor = $(`#${position}SquareColor`);
+      const $squareName = $(`.${position}SquareName`);
+      const $squareValue = $(`#${position}SquareValue`);
+      const $squareOwner = $(`#${position}SquareOwner`);
+      const $square = $(`#${position}Square`);
+      const $player1Piece = $(`#${position}player1Piece`);
+      const $player2Piece = $(`#${position}player2Piece`);
+      $squareName.html(board[position].name);
+      $squareColor.css('backgroundColor', board[position].color);
+    })
+  }
+
 
   function setUp() {
-    $playerName.html(currentPlayer.name);
-    $description.html(' is on ');
-
-    board[0].player1 = true;
-    board[0].player2 = true;
-
-    Object.keys(displayedSquares).forEach(square => {
-      displayedSquares[square].updateSquareDisplay();
-    });
-    $previewForward.on('click', () => moveBoard('forward', 1, true, null));
-    $previewBackwards.on('click', () => moveBoard('backwards', 1, true, null));
-    $rollButton.on('click', () => {
-      const distance = rollDice();
-      moveBoard('forward', distance, false, null);
-      $rollButton.off('click');
-    });
+    updateDisplayedSquares();
+    const distance = rollDice();
+    moveBoard(14, distance, false, false);
   }
 
-  currentPlayer = player1;
   setUp();
 
 });
