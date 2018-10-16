@@ -170,10 +170,16 @@ $(() => {
       $buyButton.off('click');
     }
 
-    // console.log()Object.keys(currentPlayer).filter(type => type === 3);
 
 
   }
+
+  const requiredNumberForSet = board.reduce((object, square) => {
+    if(square.set) {
+      object[square.set] ? object[square.set] ++ : object[square.set] = 1;
+    }
+    return object;
+  }, {});
 
   function buyProperty() {
     $buyButton.off('click');
